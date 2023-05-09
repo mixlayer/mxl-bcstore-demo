@@ -1,0 +1,14 @@
+name = "bcstore1"
+
+[sources.bigcommerce]
+type = "graphql"
+url = "https://gottagofast.galaxy.lol/graphql"
+query = "query.graphql"
+
+[[sources.bigcommerce.headers]]
+name = "Authorization"
+secret = "Bearer <<STOREFRONT API KEY>>"
+
+[[sources.bigcommerce.collections]]
+name = "products" 
+search = { fields = [ "name", "description" ] }

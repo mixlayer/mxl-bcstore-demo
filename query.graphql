@@ -1,0 +1,72 @@
+query {
+  site {
+    products(first: 50) @unrollConnection {
+      pageInfo {
+        startCursor
+        endCursor
+      }
+
+      edges {
+        cursor
+        node {
+          __typename
+          id
+          entityId
+          name
+
+          productOptions(first: 20) @unrollConnection {
+            pageInfo {
+              startCursor
+              endCursor
+            }
+
+            edges {
+              node {
+                # id
+                __typename
+                entityId
+                displayName
+                isRequired
+                ... on CheckboxOption {
+                  checkedByDefault
+                }
+                ... on MultipleChoiceOption {
+                  values(first: 10) {
+                    edges {
+                      node {
+                        entityId
+                        label
+                        isDefault
+                        ... on SwatchOptionValue {
+                          hexColors
+                          imageUrl(width: 200)
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          variants(first: 20) @unrollConnection {
+            pageInfo {
+              startCursor
+              endCursor
+            }
+
+            edges {
+              cursor
+              node {
+                __typename
+                id
+                entityId
+                sku
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
