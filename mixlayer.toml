@@ -1,14 +1,25 @@
 name = "bcstore1"
+env = [ 
+    { name = "BC_API_HOST", description = "BigCommerce store host" },
+    { name = "BC_API_KEY", description = "Storefront API key" },
+]
 
 [sources.bigcommerce]
 type = "graphql"
-url = "https://gottagofast.galaxy.lol/graphql"
+url = "https://{{env.BC_API_HOST}}/graphql"
 query = "query.graphql"
-
-[[sources.bigcommerce.headers]]
-name = "Authorization"
-secret = "Bearer <<STOREFRONT API KEY>>"
+headers = [ 
+    { name = "Authorization", secret = "Bearer {{env.BC_API_KEY}}" }
+]
 
 [[sources.bigcommerce.collections]]
 name = "products" 
-search = { fields = [ "name", "description" ] }
+search = { fields = [ "name", "description" ], vector = true }
+
+[chat] 
+sys_prompt = """You are a very enthusiastic shopping assistant.
+Given the following information from the brand's website, answer the question using only that
+information. If you are unsure and the answer is not
+written in the context, politely decline to answer. Never mention the context section itself when answering. Please do not write URLs that you cannot
+find in the context section."""
+collections = [ "products" ]
